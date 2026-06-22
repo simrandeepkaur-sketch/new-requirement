@@ -530,8 +530,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
           <label>Your department <span class="req">*</span></label>
           <select id="department" onchange="uH()">
             <option value="">Select your department…</option>
-            <option>Civil</option><option>IT</option><option>Electrical</option>
-            <option>Plumbing</option><option>Housekeeping</option><option>Record</option><option>General</option>
+            <option>Civil</option><option>IT</option><option>Housekeeping</option><option>Record</option><option>Head Office</option>
           </select>
           <div id="head-card" style="display:none" class="head-card">
             <div class="head-av" id="head-av">—</div>
@@ -592,7 +591,7 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 const WH='https://prabhaasra.app.n8n.cloud/webhook/ticket-raised';
 const slackUid=new URLSearchParams(window.location.search).get('uid')||'';
 const AC=4000;
-const UH={'Civil':{name:'Harpreet Kaur',av:'HK'},'IT':{name:'Rajan Mehta',av:'RM'},'Electrical':{name:'Sukhdev Singh',av:'SS'},'Plumbing':{name:'Manjit Kumar',av:'MK'},'Housekeeping':{name:'Gurpreet Devi',av:'GD'},'Record':{name:'Anil Sharma',av:'AS'},'General':{name:'Baljinder Singh',av:'BS'}};
+const UH={'Civil':{name:'Kishore Bharti',av:'KB',slack_id:'U0B76AKCTAP'},'IT':{name:'Harjeet Kaur',av:'HK',slack_id:'U04K3AKHD52'},'Housekeeping':{name:'Kavita',av:'KV',slack_id:'U0HSKG001'},'Record':{name:'Gurpreet Kaur',av:'GK',slack_id:'U04KUN6NVFB'},'Head Office':{name:'Narinder Kaur',av:'NK',slack_id:'U04U4RQFUBW'}};
 const LOC={Padiala:{'Building A':{'Ground':['Main hall','Reception','Store'],'Floor 1':['Ward 2','Ward 3','Admin']},'Building B':{'Ground':['Store','Records'],'Floor 1':['Staff quarters']}},Hospital:{'Building A':{'Ground':['OPD reception','Ward 1','Store'],'Floor 1':['Ward 4','ICU']},'Building B':{'Ground':['Lab','Pharmacy'],'Floor 1':['Server room B','Ward 5','Ward 6']},'Admin block':{'Ground':['Accounts','HR office','Conference room']}},Jhanjeri:{'Building A':{'Ground':['Reception','Admin','Store'],'Floor 1':['Residence 1','Residence 2']}},Raikot:{'Building A':{'Ground':['Main hall','Store','Reception'],'Floor 1':['Office','Conference']}}};
 const UNITS=['Nos','Pcs','Mtrs','Kg','Ltr','Box','Set','Roll','Bag','Pair','Sheet','Bundle','Feet','Inches'];
 const UL={'24h':'24 hours','1week':'1 week','1month':'1 month','3month':'3 months'};
