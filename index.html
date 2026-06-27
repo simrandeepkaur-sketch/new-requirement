@@ -19,18 +19,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
 html{-webkit-text-size-adjust:100%}
-body{
-  min-height:100vh;color:var(--text);font-size:15px;
-  -webkit-font-smoothing:antialiased;
-  display:flex;align-items:flex-start;justify-content:center;
-  padding:28px 16px 52px;
-  background:
-    radial-gradient(ellipse 75% 55% at 0% 0%, rgba(37,99,235,0.22) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(99,102,241,0.18) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(5,150,105,0.14) 0%, transparent 55%),
-    linear-gradient(160deg,#e0e7ff 0%,#dbeafe 45%,#d1fae5 100%);
-  background-attachment:fixed;
-}
+body{min-height:100vh;color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px 52px;background:radial-gradient(ellipse 75% 55% at 0% 0%, rgba(37,99,235,0.22) 0%, transparent 55%),radial-gradient(ellipse 60% 50% at 100% 0%, rgba(99,102,241,0.18) 0%, transparent 50%),radial-gradient(ellipse 70% 55% at 50% 100%, rgba(5,150,105,0.14) 0%, transparent 55%),linear-gradient(160deg,#e0e7ff 0%,#dbeafe 45%,#d1fae5 100%);background-attachment:fixed;}
 .wrap{width:100%;max-width:620px}
 .header{text-align:center;margin-bottom:20px}
 .logo-img{width:100%;max-width:320px;height:auto;display:block;margin:0 auto 14px;filter:drop-shadow(0 2px 12px rgba(37,99,235,0.15));}
@@ -159,7 +148,6 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
       <div class="step"><div class="step-dot wait" id="dot-3">3</div><div class="step-lbl" id="lbl-3">Review</div></div>
     </div>
 
-    <!-- STEP 1: ITEMS + URGENCY -->
     <div class="panel active" id="panel-1">
       <div class="sec-title">What do you need?</div>
       <div class="sec-sub">Describe your requirement and list all items needed clearly.</div>
@@ -195,7 +183,6 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
       </div>
     </div>
 
-    <!-- STEP 2: LOCATION + DEPARTMENT -->
     <div class="panel" id="panel-2">
       <div class="sec-title">Location &amp; department</div>
       <div class="sec-sub">Where is this requirement for, and who should receive it?</div>
@@ -237,7 +224,6 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
       </div>
     </div>
 
-    <!-- STEP 3: REVIEW -->
     <div class="panel" id="panel-3">
       <div class="sec-title">Review your requirement</div>
       <div class="sec-sub">Check everything before submitting. It goes straight to the unit head on Slack.</div>
@@ -249,7 +235,6 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
       </div>
     </div>
 
-    <!-- SUCCESS -->
     <div class="panel" id="panel-success">
       <div class="success">
         <button class="success-close" onclick="tryClose()" title="Close"><i class="ti ti-x"></i></button>
@@ -274,11 +259,10 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 </div>
 
 <script>
-/* ── CONFIG ── */
 const WH = 'https://prabhaasra.app.n8n.cloud/webhook/ticket-raised';
 const slackUid = new URLSearchParams(window.location.search).get('uid') || '';
+const urlName  = new URLSearchParams(window.location.search).get('name') || '';
 
-/* ── UNIT HEADS ── */
 const UH = {
   'Civil':       { name: 'Kishore Bharti', av: 'KB', slack_id: 'U0B76AKCTAP' },
   'IT':          { name: 'Harjeet Kaur',   av: 'HK', slack_id: 'U04K3AKHD52' },
@@ -287,7 +271,6 @@ const UH = {
   'Head Office': { name: 'Narinder Kaur',  av: 'NK', slack_id: 'U04U4RQFUBW' }
 };
 
-/* ── LOCATION DATA ── */
 const LOC = {
   Padiala: {
     'Building A': { 'Ground': ['Main hall','Reception','Store'], 'Floor 1': ['Ward 2','Ward 3','Admin'] },
@@ -311,9 +294,15 @@ const UL = { '24h': '24 hours', '1week': '1 week', '1month': '1 month', '3month'
 
 let urg = '', rows = [], ctr = 0;
 
-window.addEventListener('load', () => addRow());
+/* ── AUTO-FILL NAME FROM URL ── */
+window.addEventListener('load', () => {
+  addRow();
+  if (urlName) {
+    const el = document.getElementById('emp-name');
+    if (el) el.value = decodeURIComponent(urlName);
+  }
+});
 
-/* ── URGENCY SELECT ── */
 function selU(u) {
   urg = u;
   ['24h','1week','1month','3month'].forEach(id => {
@@ -322,13 +311,11 @@ function selU(u) {
   });
 }
 
-/* ── FIELD HELPER ── */
 function v(id) {
   const el = document.getElementById(id);
   return el ? el.value.trim() : '';
 }
 
-/* ── ITEMS TABLE ── */
 function addRow() {
   ctr++;
   const id = ctr;
@@ -372,7 +359,6 @@ function chkItems() {
   return true;
 }
 
-/* ── LOCATION CASCADES ── */
 function uB() {
   const br = v('branch'), s = document.getElementById('building');
   s.innerHTML = '<option value="">Select building…</option>';
@@ -393,7 +379,6 @@ function uR() {
     LOC[br][bl][fl].forEach(r => s.add(new Option(r, r)));
 }
 
-/* ── UNIT HEAD CARD ── */
 function uH() {
   const d = v('department'), c = document.getElementById('head-card');
   if (d && UH[d]) {
@@ -408,7 +393,6 @@ function uH() {
   }
 }
 
-/* ── STEP NAVIGATION ── */
 function go(n) {
   if (n === 2) {
     if (!v('emp-name'))    { alert('Please enter your name.');             return; }
@@ -429,7 +413,6 @@ function go(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ── PROGRESS ── */
 function prog(n) {
   for (let i = 1; i <= 3; i++) {
     const d  = document.getElementById('dot-'  + i);
@@ -443,7 +426,6 @@ function prog(n) {
   }
 }
 
-/* ── BUILD REVIEW ── */
 function buildReview() {
   const d    = v('department');
   const h    = UH[d];
@@ -477,7 +459,6 @@ function buildReview() {
   if (rh) rh.textContent = h ? h.name + ' (' + d + ' unit head)' : 'The unit head';
 }
 
-/* ── SUBMIT ── */
 function doSubmit() {
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
@@ -503,7 +484,6 @@ function doSubmit() {
     items:              getItems()
   };
 
-  /* ── SUCCESS HANDLER ── */
   const doSuccess = (ref) => {
     document.getElementById('success-ref').textContent  = ref;
     document.getElementById('success-head').textContent = h ? h.name : 'Unit head';
@@ -518,7 +498,6 @@ function doSubmit() {
     btn.innerHTML = '<i class="ti ti-send"></i> Submit requirement';
   };
 
-  /* ── FALLBACK ID (if webhook doesn't return one) ── */
   const fallbackRef = () => 'REQ-2026-' + String(Math.floor(Math.random() * 9000) + 1000);
 
   if (WH) {
@@ -533,9 +512,7 @@ function doSubmit() {
       try {
         const data = JSON.parse(text);
         if (data && data.complaint_id) ref = data.complaint_id;
-      } catch(e) {
-        /* n8n returned plain text or a number — use fallback */
-      }
+      } catch(e) {}
       doSuccess(ref);
     })
     .catch(e => {
@@ -547,7 +524,6 @@ function doSubmit() {
   }
 }
 
-/* ── COUNTDOWN ── */
 function startCountdown(secs) {
   const bar = document.getElementById('countdown-bar');
   const num = document.getElementById('countdown-num');
