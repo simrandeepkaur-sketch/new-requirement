@@ -299,7 +299,13 @@ window.addEventListener('load', () => {
   addRow();
   if (urlName) {
     const el = document.getElementById('emp-name');
-    if (el) el.value = decodeURIComponent(urlName);
+    if (el) {
+      el.value = decodeURIComponent(urlName);
+      el.readOnly = true;
+      el.style.background = 'rgba(255,255,255,0.4)';
+      el.style.color = 'var(--mut)';
+      el.style.cursor = 'not-allowed';
+    }
   }
 });
 
